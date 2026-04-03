@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 const navItems = [
   { label: "Home", href: "/", badge: null },
@@ -23,9 +23,12 @@ export default function NexuraNavbar() {
           margin-left: auto;
           margin-right: auto;
           display: flex;
-          flex-direction: column;
-        justify-content: center;
-        padding: 12px 16px;
+            flex-direction: column;
+          justify-content: center;
+          padding: 12px 16px;
+          position: sticky;
+          top: 12px;
+          z-index: 40;
         }
 
         .navbar {
@@ -91,7 +94,7 @@ export default function NexuraNavbar() {
 
             <div className="navbar-wrapper">
               <nav className="navbar">
-                <div className="brand">Nex<span>u</span>ra</div>
+                <Link to={'/'} className="brand">Nex<span>u</span>ra</Link>
 
                 <div className="nav-links">
                   {navItems.map(({ label, href, badge }) => {

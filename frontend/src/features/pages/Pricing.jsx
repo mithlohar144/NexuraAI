@@ -8,10 +8,13 @@ const Pricing = () => {
   const primaryCtaHref = user ? '/account' : '/register'
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#130631] via-[#050008] to-black text-zinc-100 font-sans">
-      <NexuraNavbar />
+    <>
+    
+    <div className="min-h-screen bg-gradient-to-b bg-black text-zinc-100 font-sans">
+       <NexuraNavbar />
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-4 pb-24 pt-16 md:px-8">
         {/* Header */}
+       
         <header className="text-center">
           <p className="text-[0.7rem] font-mono uppercase tracking-[0.35em] text-zinc-500">
             Plans & credits
@@ -128,6 +131,7 @@ const Pricing = () => {
         <Footer />
       </div>
     </div>
+    </>
   )
 }
 

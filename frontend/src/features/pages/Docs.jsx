@@ -126,7 +126,7 @@ const operationalNotes = [
 
 const Docs = () => {
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-[#130631] via-[#050008] to-black text-zinc-100 font-sans">
+		<div className="min-h-screen bg-gradient-to-b bg-black text-zinc-100 font-sans">
 			<div className="relative mx-auto flex min-h-screen max-w-5xl flex-col px-4 pb-20 pt-6 md:px-8">
 				<NexuraNavbar />
 
