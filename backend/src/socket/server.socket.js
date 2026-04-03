@@ -6,8 +6,8 @@ let io;
 export function initSocket(httpServer) {
     io = new Server(httpServer, {
         cors: {
-            origin: "https://nexura-ai-sepia.vercel.app/",
-            credentials: true
+            origin: "https://nexura-ai-sepia.vercel.app",
+            credentials: true,
         }
     });
     console.log("socket Io server is running")
