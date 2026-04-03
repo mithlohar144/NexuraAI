@@ -4,15 +4,20 @@ import morgan from "morgan";
 import cors from "cors";
 const app = express();
 
-// Middleware
-app.use(cors({
-    origin: [
+// CORS configuration
+const frontendUrl = (process.env.FRONTEND_URL || "https://nexura-ai-sepia.vercel.app").replace(/\/$/, "");
+const allowedOrigins = [
     "http://localhost:5173",
-    "https://nexura-ai-sepia.vercel.app"
-  ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));    
+    frontendUrl,
+];
+
+app.use(
+    cors({
+        origin: allowedOrigins,
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
