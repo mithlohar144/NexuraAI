@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
+import redis from "../config/cache.js";
 
-
-export function authUser(req, res, next) {
+export async function authUser(req, res, next) {
     const token = req.cookies.token
     if (!token) {
         return res.status(401).json({
@@ -10,12 +10,18 @@ export function authUser(req, res, next) {
             err: "Unauthorized"
         })
     }
+    const blacklistedToken = await redis.get(token)
+    if (blacklistedToken) {
+        return res.status(401).json({
+            message: 'Invalid token'
+        })
+    }
 
-    try{
+    try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
-    }catch(err){
+    } catch (err) {
         return res.status(401).json({
             message: "unAuthorized",
             success: false,

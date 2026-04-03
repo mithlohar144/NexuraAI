@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginValidation, registerValidation } from "../validator/auth.validator.js";
-import { getMe, login, register, verifyEmail } from "../controller/auth.controller.js";
+import { getMe, login, register, verifyEmail, upgradeToPremium, logoutUser } from "../controller/auth.controller.js";
 import { authUser } from "../middleware/auth.middelware.js";
 
 
@@ -26,6 +26,20 @@ authRouter.post("/login", loginValidation, login);
  * @desc Get current authenticated user's info
  * @access Private
  */
+/**
+ * @route GET /api/auth/logout
+ * @desc Logout user by blacklisting the token
+ * @access Private
+ */
+
+authRouter.get('/logout', logoutUser)
+
+
+/**
+ * @route GET /api/auth/get-me
+ * @desc Get current authenticated user's info
+ * @access Private
+ */
 
 authRouter.get("/get-me", authUser, getMe);
 
@@ -35,4 +49,11 @@ authRouter.get("/get-me", authUser, getMe);
  * @access Public
  */
 authRouter.get("/verify-email", verifyEmail);
+
+/**
+ * @route POST /api/auth/upgrade-premium
+ * @desc Upgrade current authenticated user to premium plan
+ * @access Private
+ */
+authRouter.post("/upgrade-premium", authUser, upgradeToPremium);
 export default authRouter;

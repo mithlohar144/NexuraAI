@@ -15,10 +15,10 @@ const Login = () => {
         event.preventDefault()
 
         await handleLogin(email, password)
-        navigate('/')
+        navigate('/app')
     }
     if(!loading && user){
-        navigate('/')
+        navigate('/app')
     }
 
     return (

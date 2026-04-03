@@ -19,3 +19,13 @@ export const GetMe = async () => {
     const response = await api.get('/api/auth/get-me')
     return response.data
 }
+
+export const upgradePremium = async () => {
+    const response = await api.post('/api/auth/upgrade-premium')
+    return response.data
+}
+
+export const logout = async () => {
+    const response = await api.get('/api/auth/logout')
+    return response.data
+}

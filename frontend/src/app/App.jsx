@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router'
 import { router } from './app.routes'
 import { useAuth } from '../features/auth/hook/useAuth'
 import { useEffect } from 'react'
+import NexuraNavbar from '../features/component/Navbar'
 const App = () => {
   const auth = useAuth();
 
@@ -10,7 +11,10 @@ const App = () => {
     auth.handleGetMe();
   }, [])
   return (
-    <RouterProvider router={router} />
+    <>
+
+      <RouterProvider router={router} />
+    </>
   )
 }
 

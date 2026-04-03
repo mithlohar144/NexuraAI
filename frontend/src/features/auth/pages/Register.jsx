@@ -1,20 +1,29 @@
 import React, { useState } from 'react'
+import { useAuth } from '../hook/useAuth'
+import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
 
 const Register = () => {
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
-	const handleSubmit = (event) => {
+	const navigate = useNavigate()
+	const { handleregister } = useAuth()
+	const user = useSelector((state) => state.auth.user)
+	const loading = useSelector((state) => state.auth.loading)
+	const error = useSelector((state) => state.auth.error)
+
+	const handleSubmit = async (event) => {
 		event.preventDefault()
-
-		const payload = {
-			username,
-			email,
-			password,
+		const result = await handleregister(username, email, password)
+		if (result?.success) {
+			navigate('/login')
 		}
+	}
 
-		console.log('Register form submitted:', payload)
+	if (!loading && user) {
+		navigate('/app')
 	}
 
 	return (
@@ -70,19 +79,23 @@ const Register = () => {
 							/>
 						</div>
 
+						{error && (
+							<p className="text-sm text-red-400">{error}</p>
+						)}
+
 						<button
 							type="submit"
-							  className="mt-2 w-full rounded-lg bg-linear-to-r from-red-600 via-red-500 to-rose-500 px-4 py-2.5 font-semibold text-white shadow-lg shadow-red-900/40 transition hover:from-red-500 hover:via-red-400 hover:to-rose-400"
+							className="mt-2 w-full rounded-lg bg-linear-to-r from-red-600 via-red-500 to-rose-500 px-4 py-2.5 font-semibold text-white shadow-lg shadow-red-900/40 transition hover:from-red-500 hover:via-red-400 hover:to-rose-400"
 						>
 							Register
 						</button>
 					</form>
-                    <p className="mt-4 text-center text-sm text-zinc-400">
-                        Already have an account?{' '}
-                        <a href="/login" className="text-red-400 hover:text-red-300">
-                            Login
-                        </a>
-                    </p>
+					<p className="mt-4 text-center text-sm text-zinc-400">
+						Already have an account?{' '}
+						<a href="/login" className="text-red-400 hover:text-red-300">
+							Login
+						</a>
+					</p>
 				</div>
 			</div>
 		</section>

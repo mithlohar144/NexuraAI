@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import remarkGfm from 'remark-gfm'
 import { useChat } from '../hook/useChat'
 import ConfirmDialog from '../component/ConfirmDialog'
+import { useNavigate } from 'react-router'
+import { useAuth } from '../../auth/hook/useAuth'
 
 /* ─── Typewriter hook for USER messages ─────────────────────────────────────
    Reveals text character by character, like someone typing in real time.      */
@@ -111,6 +113,10 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [chatToDelete, setChatToDelete] = useState(null)
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false)
+  const navigate = useNavigate()
+  const { handleLogout } = useAuth()
+  const authUser = useSelector((state) => state.auth.user)
   // Track which message IDs have already been animated so replays don't re-animate
   const [animatedIds] = useState(() => new Set())
   const chats = useSelector((state) => state.chat.chats)
@@ -198,6 +204,14 @@ const Dashboard = () => {
         .tb-thread { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--smoke3); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .tb-thread em { color:var(--o1); font-style:normal; }
         .tb-status { display:flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:10px; color:var(--smoke3); letter-spacing:1px; flex-shrink:0; }
+        .tb-account-wrap { position:relative; margin-left:12px; }
+        .tb-account-btn { display:flex; align-items:center; gap:6px; border-radius:999px; border:1px solid var(--rule2); padding:4px 10px; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.4px; text-transform:uppercase; background:transparent; color:var(--smoke3); cursor:pointer; transition:all 0.15s; }
+        .tb-account-btn:hover { border-color:var(--o1); color:var(--o1); background:rgba(255,102,0,0.06); }
+        .tb-account-avatar { width:18px; height:18px; border-radius:999px; background:linear-gradient(135deg,var(--o2),var(--o4)); color:var(--smoke); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; }
+        .tb-account-chevron { font-size:9px; }
+        .tb-account-menu { position:absolute; right:0; top:120%; min-width:150px; border-radius:10px; border:1px solid var(--rule2); background:var(--ink2); box-shadow:0 16px 40px rgba(0,0,0,0.6); padding:6px 0; z-index:50; }
+        .tb-account-item { width:100%; padding:6px 12px; background:transparent; border:none; text-align:left; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.4px; text-transform:uppercase; color:var(--smoke3); cursor:pointer; display:flex; align-items:center; justify-content:space-between; }
+        .tb-account-item:hover { background:rgba(255,102,0,0.06); color:var(--o1); }
         .sdot { width:5px; height:5px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px #22c55e; animation:blink 2s ease-in-out infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
@@ -283,6 +297,135 @@ const Dashboard = () => {
         .inmeta { max-width:860px; margin:8px auto 0; display:flex; justify-content:space-between; align-items:center; }
         .inmeta span { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1px; color:var(--smoke3); text-transform:uppercase; }
 
+        /* ── WORKSPACE LAYOUT (Home-style) ── */
+        .ws-main-inner {
+          max-width:1040px;
+          margin:24px auto 32px;
+          padding:0 24px 32px;
+          display:flex;
+          flex-direction:column;
+          gap:24px;
+        }
+        .ws-hero-title {
+          font-size:26px;
+          font-weight:600;
+          letter-spacing:0.02em;
+          color:var(--smoke);
+        }
+        .ws-hero-sub {
+          margin-top:4px;
+          font-size:13px;
+          color:var(--smoke2);
+        }
+        .ws-input-card {
+          border-radius:20px;
+          background:radial-gradient(circle at top left,rgba(255,102,0,0.14),transparent 55%),var(--ink3);
+          border:1px solid var(--rule2);
+          padding:14px 14px 10px;
+          box-shadow:0 24px 80px rgba(0,0,0,0.85);
+        }
+        .ws-input-card .inwrap {
+          background:var(--ink4);
+          border-radius:16px;
+          border:1px solid var(--rule2);
+          padding:10px 10px 10px 14px;
+        }
+        .ws-input-card .inbox {
+          background:transparent;
+          border:none;
+          box-shadow:none;
+          min-height:64px;
+        }
+        .ws-input-card .sendbtn {
+          background:var(--o1);
+          border-color:var(--o1);
+          color:#050014;
+        }
+        .ws-input-card .sendbtn:hover:not(:disabled) {
+          background:#ff7a1a;
+        }
+        .ws-input-footer {
+          margin-top:10px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:0 2px;
+        }
+        .ws-tools-btn {
+          display:inline-flex;
+          align-items:center;
+          gap:6px;
+          padding:5px 10px;
+          border-radius:999px;
+          border:1px solid var(--rule2);
+          background:rgba(8,6,16,0.9);
+          color:var(--smoke3);
+          font-family:'Space Mono',monospace;
+          font-size:10px;
+          letter-spacing:1.5px;
+          text-transform:uppercase;
+          cursor:pointer;
+        }
+        .ws-tools-btn:hover {
+          border-color:var(--o1);
+          color:var(--o1);
+        }
+        .ws-input-hint {
+          font-family:'Space Mono',monospace;
+          font-size:10px;
+          letter-spacing:1px;
+          color:var(--smoke3);
+          text-transform:uppercase;
+        }
+        .ws-actions-row {
+          display:flex;
+          flex-wrap:wrap;
+          gap:8px;
+        }
+        .ws-action-pill {
+          display:inline-flex;
+          align-items:center;
+          gap:6px;
+          padding:6px 10px;
+          border-radius:999px;
+          border:1px solid var(--rule);
+          background:rgba(8,6,16,0.95);
+          color:var(--smoke2);
+          font-size:11px;
+          cursor:pointer;
+        }
+        .ws-action-pill span {
+          font-size:13px;
+        }
+        .ws-suggestions {
+          margin-top:4px;
+        }
+        .ws-suggestions-header {
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:8px;
+          font-size:12px;
+          color:var(--smoke2);
+        }
+        .ws-view-all {
+          border:none;
+          background:transparent;
+          color:var(--smoke3);
+          font-size:11px;
+          cursor:pointer;
+        }
+        .ws-chat-transcript {
+          margin-top:8px;
+          border-radius:18px;
+          border:1px solid var(--rule2);
+          background:rgba(8,6,16,0.85);
+          overflow:hidden;
+        }
+        .ws-chat-transcript .msgs {
+          padding:20px 0 6px;
+        }
+
         @media(max-width:768px) {
           .root { flex-direction:column; }
           .sb { position:fixed; top:0; bottom:0; left:0; z-index:30; width:260px; transform:translateX(-100%); opacity:0; pointer-events:none; transition:transform 0.25s ease, opacity 0.25s ease; }
@@ -305,8 +448,8 @@ const Dashboard = () => {
         <nav className={`sb${sidebarOpen ? '' : ' closed'}`}>
           <div className="sb-inner">
             <div className="sb-logo">
-              <span className="sb-wordmark">Perplexity</span>
-              <span className="sb-sub">v2.0 — research mode</span>
+              <span className="sb-wordmark">Nexura</span>
+              <span className="sb-sub">v1.0 — research mode</span>
             </div>
             <div className="sb-sec">Threads</div>
             <div className="sb-list">
@@ -317,7 +460,9 @@ const Dashboard = () => {
                   onClick={() => openChat(c.id)}
                 >
                   <span className="sb-dot" />
-                  <span className="sb-title">{c.title}</span>
+                  <span className="sb-title">
+                    {c.title.replace(/\*\*(.*?)\*\*/g, '$1')}
+                  </span>
                   <button
                     type="button"
                     className="sb-delbtn"
@@ -351,7 +496,7 @@ const Dashboard = () => {
               }}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
               </svg>
               New Thread
             </button>
@@ -363,11 +508,51 @@ const Dashboard = () => {
           <div className="topbar">
             <button className="menubtn" type="button" onClick={() => setSidebarOpen(p => !p)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
             <div className="tb-thread"><em>// </em>{chatTitle}</div>
-            <div className="tb-status"><div className="sdot" />online</div>
+            <div className="tb-status">
+              <div className="sdot" />online
+              <div className="tb-account-wrap">
+                <button
+                  type="button"
+                  className="tb-account-btn"
+                  onClick={() => setAccountMenuOpen(o => !o)}
+                >
+                  <div className="tb-account-avatar">
+                    {(authUser?.username || 'U').slice(0, 1).toUpperCase()}
+                  </div>
+                  <span>{authUser?.username || 'Account'}</span>
+                  <span className="tb-account-chevron">▾</span>
+                </button>
+                {accountMenuOpen && (
+                  <div className="tb-account-menu">
+                    <button
+                      type="button"
+                      className="tb-account-item"
+                      onClick={() => {
+                        setAccountMenuOpen(false)
+                        navigate('/account')
+                      }}
+                    >
+                      <span>Profile</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="tb-account-item"
+                      onClick={async () => {
+                        setAccountMenuOpen(false)
+                        await handleLogout()
+                        navigate('/login')
+                      }}
+                    >
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {messages.length > 0 ? (
@@ -427,8 +612,8 @@ const Dashboard = () => {
                 />
                 <button type="submit" disabled={!chatInput.trim()} className="sendbtn">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"/>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
                   </svg>
                 </button>
               </div>
