@@ -1,10 +1,9 @@
 import { io } from "socket.io-client";
-import dotenv from "dotenv";
-dotenv.config()
+
 
 export const initializeSocketConnection = () => {
 
-    const socket = io(process.env.BACKEND_URL, {
+    const socket = io('https://nexuraai.onrender.com', {
         withCredentials: true,
     })
 

@@ -544,7 +544,7 @@ const Dashboard = () => {
                       onClick={async () => {
                         setAccountMenuOpen(false)
                         await handleLogout()
-                        navigate('/login')
+                        navigate('/')
                       }}
                     >
                       <span>Logout</span>
