@@ -78,7 +78,7 @@ const Landing = () => {
                   <p>Give me a concise update on today&apos;s AI news with sources.</p>
                 </div>
                 <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-b from-amber-500/5 via-zinc-900/80 to-zinc-950/80 p-3">
-                  <div className="mb-1 text-[0.6rem] font-mono text-amber-300">Perplexity · Research mode</div>
+                  <div className="mb-1 text-[0.6rem] font-mono text-amber-300">Nexura · Research mode</div>
                   <p className="text-amber-50/90">
                     Scanning the live web for today&apos;s AI releases, funding
                     rounds, and notable papers. You&apos;ll get a 5‑bullet summary +
