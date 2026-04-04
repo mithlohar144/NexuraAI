@@ -123,11 +123,15 @@ export async function login(req, res) {
         username: user.username,
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
-    const isProd = process.env.NODE_ENV === 'production';
+    // Cross-site cookies (Vercel frontend -> Render backend) require
+    // SameSite=None + Secure, otherwise the browser won't send the cookie.
+    // We derive this from whether the request is HTTPS, instead of relying
+    // on NODE_ENV being set correctly in the hosting environment.
+    const isSecureRequest = req.secure || req.headers['x-forwarded-proto'] === 'https';
     const cookieOptions = {
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? 'none' : 'lax',
+        secure: isSecureRequest,
+        sameSite: isSecureRequest ? 'none' : 'lax',
     };
 
     res.cookie('token', token, cookieOptions)
@@ -149,11 +153,11 @@ export async function logoutUser(req, res) {
             message:'Token not provided'
         })
     }
-    const isProd = process.env.NODE_ENV === 'production';
+    const isSecureRequest = req.secure || req.headers['x-forwarded-proto'] === 'https';
     const cookieOptions = {
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? 'none' : 'lax',
+        secure: isSecureRequest,
+        sameSite: isSecureRequest ? 'none' : 'lax',
     };
 
     res.clearCookie('token', cookieOptions);
