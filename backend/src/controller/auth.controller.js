@@ -123,7 +123,15 @@ export async function login(req, res) {
         username: user.username,
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
-    res.cookie('token', token)
+    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
+    const isProduction = process.env.NODE_ENV === "production";
+    const cookieOptions = {
+        httpOnly: true,
+        secure: isProduction && isHttps,
+        sameSite: isProduction && isHttps ? "none" : "lax",
+    };
+
+    res.cookie('token', token, cookieOptions)
     res.status(200).json({
         message: "Login successful",
         success: true,
@@ -142,7 +150,15 @@ export async function logoutUser(req, res) {
             message:'Token not provided'
         })
     }
-    res.clearCookie('token');
+    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
+    const isProduction = process.env.NODE_ENV === "production";
+    const cookieOptions = {
+        httpOnly: true,
+        secure: isProduction && isHttps,
+        sameSite: isProduction && isHttps ? "none" : "lax",
+    };
+
+    res.clearCookie('token', cookieOptions);
     await redis.set(token, Date.now().toString(), 'EX', 30 * 30)
     return res.status(200).json({
         message:'User logout successfully'

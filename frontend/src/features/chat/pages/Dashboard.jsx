@@ -135,6 +135,7 @@ const Dashboard = () => {
 
   const handleSubmitMessage = (e) => {
     e.preventDefault()
+    
     const trimmed = chatInput.trim()
     if (!trimmed) return
     chat.handleSendMessage({ message: trimmed, chatId: currentChatId })

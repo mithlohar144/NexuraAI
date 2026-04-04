@@ -9,6 +9,7 @@ const App = () => {
 
   useEffect(() => {
     auth.handleGetMe();
+
   }, [])
   return (
     <>

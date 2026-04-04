@@ -4,6 +4,10 @@ import morgan from "morgan";
 import cors from "cors";
 const app = express();
 
+// Required when running behind proxies (Render/Vercel) so secure cookies and
+// protocol detection behave correctly.
+app.set("trust proxy", 1);
+
 // CORS configuration
 const frontendUrl = (process.env.FRONTEND_URL || "https://nexura-ai-sepia.vercel.app").replace(/\/$/, "");
 const allowedOrigins = [

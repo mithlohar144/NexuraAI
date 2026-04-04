@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const API_BASE_URL = (import.meta.env.BACKEND_URL || "http://localhost:5000").replace(/\/$/, "")
+
 const api = axios.create({
-    baseURL: 'https://nexuraai.onrender.com' ,
+    baseURL: API_BASE_URL,
     withCredentials: true,
 })
 
