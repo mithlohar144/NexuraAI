@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { useAuth } from '../hook/useAuth'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
+import Toast from '../../component/Toast'
 
 const Register = () => {
 	const [username, setUsername] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [toast, setToast] = useState(null)
 
 	const navigate = useNavigate()
 	const { handleregister } = useAuth()
@@ -16,9 +18,23 @@ const Register = () => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
-		const result = await handleregister(username, email, password)
-		if (result?.success) {
-			navigate('/login')
+
+		try {
+			const result = await handleregister(username, email, password)
+			
+			if (result?.success) {
+				setToast({ message: 'Registration successful! Redirecting to login...', type: 'success' })
+				setTimeout(() => {
+					navigate('/login')
+				}, 2000)
+			} else {
+				setToast({ 
+					message: result?.error || error || 'Registration failed. Please try again.', 
+					type: 'error' 
+				})
+			}
+		} catch (err) {
+			setToast({ message: 'An error occurred. Please try again.', type: 'error' })
 		}
 	}
 
@@ -28,6 +44,15 @@ const Register = () => {
 
 	return (
 		<section className="min-h-screen bg-linear-to-br from-zinc-950 via-neutral-900 to-red-950 px-4 py-10 text-zinc-100">
+			{toast && (
+				<Toast
+					message={toast.message}
+					type={toast.type}
+					onClose={() => setToast(null)}
+					duration={5000}
+				/>
+			)}
+
 			<div className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-md items-center justify-center">
 				<div className="w-full rounded-2xl border border-red-900/60 bg-zinc-900/80 p-6 shadow-[0_0_50px_rgba(127,29,29,0.25)] backdrop-blur">
 					<h1 className="mb-2 text-3xl font-bold tracking-tight text-red-300">Create Account</h1>
@@ -79,15 +104,12 @@ const Register = () => {
 							/>
 						</div>
 
-						{error && (
-							<p className="text-sm text-red-400">{error}</p>
-						)}
-
 						<button
 							type="submit"
-							className="mt-2 w-full rounded-lg bg-linear-to-r from-red-600 via-red-500 to-rose-500 px-4 py-2.5 font-semibold text-white shadow-lg shadow-red-900/40 transition hover:from-red-500 hover:via-red-400 hover:to-rose-400"
+							disabled={loading}
+							className="mt-2 w-full rounded-lg bg-linear-to-r from-red-600 via-red-500 to-rose-500 px-4 py-2.5 font-semibold text-white shadow-lg shadow-red-900/40 transition hover:from-red-500 hover:via-red-400 hover:to-rose-400 disabled:cursor-not-allowed disabled:opacity-50"
 						>
-							Register
+							{loading ? 'Creating account...' : 'Register'}
 						</button>
 					</form>
 					<p className="mt-4 text-center text-sm text-zinc-400">
