@@ -39,7 +39,12 @@ export function useAuth() {
             const data = await GetMe()
             dispatch(setUser(data.user))
         } catch (err) {
-            dispatch(setError(err.response?.data?.message || 'Failed to fetch user'))
+            // 401 means "no active session"; don't show it as an app error.
+            if (err?.response?.status === 401) {
+                dispatch(setUser(null))
+            } else {
+                dispatch(setError(err.response?.data?.message || 'Failed to fetch user'))
+            }
         } finally {
             dispatch(setLoading(false))
         }

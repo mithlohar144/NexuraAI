@@ -123,12 +123,11 @@ export async function login(req, res) {
         username: user.username,
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
-    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProd = process.env.NODE_ENV === 'production';
     const cookieOptions = {
         httpOnly: true,
-        secure: isProduction && isHttps,
-        sameSite: isProduction && isHttps ? "none" : "lax",
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
     };
 
     res.cookie('token', token, cookieOptions)
@@ -150,12 +149,11 @@ export async function logoutUser(req, res) {
             message:'Token not provided'
         })
     }
-    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProd = process.env.NODE_ENV === 'production';
     const cookieOptions = {
         httpOnly: true,
-        secure: isProduction && isHttps,
-        sameSite: isProduction && isHttps ? "none" : "lax",
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
     };
 
     res.clearCookie('token', cookieOptions);

@@ -1,10 +1,13 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = (import.meta.env.BACKEND_URL || "http://localhost:5000").replace(/\/$/, "")
+const SOCKET_BASE_URL =
+    import.meta.env.VITE_SOCKET_URL ||
+    import.meta.env.VITE_API_BASE_URL 
+  
 
 export const initializeSocketConnection = () => {
 
-    const socket = io(SOCKET_URL, {
+    const socket = io(SOCKET_BASE_URL, {
         withCredentials: true,
     })
 
