@@ -7,7 +7,7 @@ export async function authUser(req, res, next) {
         return res.status(401).json({
             message: "unAuthorized",
             success: false,
-            err: "Unauthorized"
+            err: "No token provided"
         })
     }
     const blacklistedToken = await redis.get(token)
