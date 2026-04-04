@@ -1,20 +1,11 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useAuth } from '../../auth/hook/useAuth'
 
 const AccountDashboard = () => {
   const { user, loading, error } = useSelector((state) => state.auth)
-  const { handleUpgradeToPremium } = useAuth()
 
-  const planLabel = user?.isPremium ? 'Pro · Premium' : 'Starter · Free'
-  const planDescription = user?.isPremium
-    ? 'You have access to live web research and premium models.'
-    : 'Upgrade to unlock live web research and higher limits.'
-
-  const onUpgradeClick = async () => {
-    if (!user || user.isPremium) return
-    await handleUpgradeToPremium()
-  }
+  const planLabel = 'Research workspace'
+  const planDescription = 'You have access to live web research and all available tools.'
 
   if (loading && !user) {
     return (
@@ -67,17 +58,8 @@ const AccountDashboard = () => {
               <ul className="mt-5 space-y-1.5 text-xs text-amber-50/90">
                 <li>• Structured, citation‑ready answers</li>
                 <li>• Persistent chat threads</li>
-                <li>• {user?.isPremium ? 'Live web research enabled' : 'Live web research (premium only)'}</li>
+                <li>• Live web research enabled</li>
               </ul>
-
-              <button
-                type="button"
-                onClick={onUpgradeClick}
-                disabled={!user || user.isPremium || loading}
-                className="mt-7 inline-flex w-full items-center justify-center rounded-full border border-amber-400/70 bg-zinc-950/90 px-4 py-3 text-[0.7rem] font-mono uppercase tracking-[0.25em] text-amber-200 shadow-[0_20px_60px_rgba(0,0,0,0.9)] hover:bg-amber-500 hover:text-black disabled:cursor-default disabled:border-zinc-800 disabled:bg-zinc-950 disabled:text-zinc-500"
-              >
-                {user?.isPremium ? 'Premium active' : loading ? 'Upgrading…' : 'Upgrade to premium'}
-              </button>
             </div>
           </section>
         </main>

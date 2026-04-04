@@ -44,7 +44,7 @@ const overviewCards = [
 	{
 		title: 'Keep accounts safe',
 		description:
-			'Guarded routes, secure sessions, and controls around premium features.',
+			'Guarded routes, secure sessions, and controls around web search usage.',
 	},
 ]
 
@@ -76,7 +76,7 @@ const featureGroups = [
 	{
 		title: 'Account & billing',
 		items: [
-			'Upgrade to unlock live web search and higher limits.',
+			'Manage live web search usage and limits from your account.',
 			'Check remaining credits directly from the account page.',
 			'Keep invoices and plan history in one place.',
 		],

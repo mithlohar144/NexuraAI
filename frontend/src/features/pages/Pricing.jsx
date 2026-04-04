@@ -50,8 +50,8 @@ const Pricing = () => {
               Buy Starter
             </a>
             <ul className="mt-5 space-y-2 text-xs text-zinc-300">
-              <li>• 15 research credits for premium runs</li>
-              <li>• 1 credit per premium generate / edit</li>
+              <li>• 15 research credits for web-backed runs</li>
+              <li>• 1 credit per generate / edit</li>
               <li>• Access to core Nexura models</li>
               <li>• Credit balance visible in account</li>
               <li>• Email support</li>

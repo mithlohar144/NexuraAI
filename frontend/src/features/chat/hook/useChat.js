@@ -15,20 +15,20 @@ export const useChat = () => {
         const { chat, aiMessage } = data
         if (!chatId)
             dispatch(createNewChat({
-                chatId: chat._id,
+                chatId: chat.id,
                 title: chat.title,
             }))
         dispatch(addNewMessage({
-            chatId: chatId || chat._id,
+            chatId: chatId || chat.id,
             content: message,
             role: "user",
         }))
         dispatch(addNewMessage({
-            chatId: chatId || chat._id,
+            chatId: chatId || chat.id,
             content: aiMessage.content,
             role: aiMessage.role,
         }))
-        dispatch(setCurrentChatId(chat._id))
+        dispatch(setCurrentChatId(chat.id))
     }
 
     async function handleGetChats() {
@@ -36,8 +36,8 @@ export const useChat = () => {
         const data = await getChats()
         const { chats } = data
         dispatch(setChats(chats.reduce((acc, chat) => {
-            acc[ chat._id ] = {
-                id: chat._id,
+            acc[ chat.id ] = {
+                id: chat.id,
                 title: chat.title,
                 messages: [],
                 lastUpdated: chat.updatedAt,

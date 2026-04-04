@@ -23,30 +23,16 @@ const searchInternetTool = tool(searchInternet, {
   }),
 });
 
-const baseAgent = createAgent({
-  model: mistralModel,
-  tools: [],
-});
-
-const premiumAgent = createAgent({
+const agent = createAgent({
   model: mistralModel,
   tools: [searchInternetTool],
 });
 
 export async function generateResponse(messages, user) {
-  const isPremium = user?.isPremium;
-  const agent = isPremium ? premiumAgent : baseAgent;
-
-  const systemPrompt = isPremium
-    ? `
+  const systemPrompt = `
         You are a helpful and precise assistant for answering questions.
         If you don't know the answer, say you don't know.
         If the question requires up-to-date information, use the "searchInternet" tool to get the latest information from the internet and then answer based on the search results.
-      `
-    : `
-        You are a helpful and precise assistant for answering questions.
-        You do NOT have access to the "searchInternet" tool or the live internet.
-        If the question requires up-to-date information, clearly say that live internet search is only available for premium users and answer based on your existing knowledge only.
       `;
 
   const response = await agent.invoke({

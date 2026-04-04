@@ -121,7 +121,6 @@ export async function login(req, res) {
         id: user._id,
         email: user.email,
         username: user.username,
-        isPremium: user.isPremium,
     }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
     res.cookie('token', token)
@@ -132,7 +131,6 @@ export async function login(req, res) {
             id: user._id,
             username: user.username,
             email: user.email,
-            isPremium: user.isPremium,
         }        
     })
 }
@@ -151,7 +149,6 @@ export async function logoutUser(req, res) {
     })
 }
 
-
 export async function getMe(req, res) {
     const userId = req.user.id;
 
@@ -169,57 +166,4 @@ export async function getMe(req, res) {
         success: true,
         user
     })
-}
-
-export async function upgradeToPremium(req, res) {
-    const userId = req.user.id;
-
-    const user = await userModel.findById(userId);
-    if (!user) {
-        return res.status(404).json({
-            message: "User not found",
-            success: false,
-            err: "User not found",
-        });
-    }
-
-    if (user.isPremium) {
-        return res.status(200).json({
-            message: "User is already on the premium plan",
-            success: true,
-            user: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                isPremium: user.isPremium,
-            },
-        });
-    }
-
-    user.isPremium = true;
-    await user.save();
-
-    const token = jwt.sign(
-        {
-            id: user._id,
-            email: user.email,
-            username: user.username,
-            isPremium: user.isPremium,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-    );
-
-    res.cookie("token", token);
-
-    return res.status(200).json({
-        message: "Upgraded to premium successfully",
-        success: true,
-        user: {
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            isPremium: user.isPremium,
-        },
-    });
 }

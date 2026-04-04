@@ -2,7 +2,6 @@ import React from 'react'
 import gsap from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { useSelector } from 'react-redux'
-import { useAuth } from '../auth/hook/useAuth'
 import Footer from '../component/Footer.jsx'
 import NexuraNavbar from '../component/Navbar.jsx'
 import TrustedStrip from '../component/TrustedStrip.jsx'
@@ -12,7 +11,6 @@ gsap.registerPlugin(ScrollToPlugin)
 
 const Landing = () => {
   const user = useSelector((state) => state.auth.user)
-  const { handleUpgradeToPremium } = useAuth()
 
   const handleScrollTo = (event, target) => {
     event.preventDefault()
@@ -23,16 +21,6 @@ const Landing = () => {
     })
   }
 
-  const handleGoPremiumClick = async (event) => {
-    if (!user) {
-      // allow navigation to /register for new users
-      return
-    }
-    event.preventDefault()
-    if (!user.isPremium) {
-      await handleUpgradeToPremium()
-    }
-  }
   return (
     <div className="min-h-screen bg-[#050008] text-zinc-100 font-sans">
       {/* Top glow background */}
@@ -179,7 +167,7 @@ const Landing = () => {
               </p>
               <p className="mt-2 text-2xl font-semibold text-amber-50">Rs 499 · 40 credits</p>
               <p className="mt-2 text-xs text-amber-100/80">
-                Enough premium runs for active founders and product teams.
+                Enough research runs for active founders and product teams.
               </p>
               <ul className="mt-4 space-y-1.5 text-xs text-amber-50/90">
                 <li>• Everything in Starter</li>
@@ -188,11 +176,10 @@ const Landing = () => {
                 <li>• Export-ready answers for decks and docs</li>
               </ul>
               <a
-                href={user ? "#pricing" : "/register"}
-                onClick={handleGoPremiumClick}
+                href={user ? "/app" : "/register"}
                 className="mt-5 inline-flex w-full items-center justify-center rounded-full border border-amber-400/70 bg-black/90 px-4 py-2 text-[0.7rem] font-mono uppercase tracking-[0.25em] text-amber-200 hover:bg-amber-500 hover:text-black disabled:cursor-default disabled:border-zinc-700 disabled:bg-zinc-900 disabled:text-zinc-500"
               >
-                {user?.isPremium ? 'Premium active' : 'Upgrade to Studio'}
+                {user ? 'Open workspace' : 'Get started'}
               </a>
             </div>
             <div className="rounded-3xl border border-zinc-800 bg-zinc-950/90 p-5 text-sm">
@@ -231,9 +218,9 @@ const Landing = () => {
                 How does live web search work?
               </summary>
               <p className="border-t border-zinc-800 px-4 py-3 text-xs text-zinc-300">
-                Premium plans route your questions through our Tavily‑powered
-                searchInternet tool, which pulls fresh pages, filters noise, and
-                sends only clean context into the model.
+                Our Tavily‑powered searchInternet tool pulls fresh pages,
+                filters noise, and sends only clean context into the model
+                for every user.
               </p>
             </details>
             <details className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/80">
