@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import remarkGfm from 'remark-gfm'
 import { useChat } from '../hook/useChat'
 import ConfirmDialog from '../component/ConfirmDialog'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../auth/hook/useAuth'
 
 /* ─── Typewriter hook for USER messages ─────────────────────────────────────
@@ -449,7 +449,7 @@ const Dashboard = () => {
         <nav className={`sb${sidebarOpen ? '' : ' closed'}`}>
           <div className="sb-inner">
             <div className="sb-logo">
-              <span className="sb-wordmark">Nexura</span>
+             <Link to='/'> <span className="sb-wordmark">Nexura</span> </Link>
               <span className="sb-sub">v1.0 — research mode</span>
             </div>
             <div className="sb-sec">Threads</div>
