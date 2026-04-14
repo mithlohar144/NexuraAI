@@ -28,8 +28,10 @@ const Register = () => {
 					navigate('/login')
 				}, 2000)
 			} else {
+				const rawMessage = result?.error || error || 'Registration failed. Please try again.'
+				const safeMessage = typeof rawMessage === 'string' ? rawMessage : 'Registration failed. Please try again.'
 				setToast({ 
-					message: result?.error || error || 'Registration failed. Please try again.', 
+					message: safeMessage, 
 					type: 'error' 
 				})
 			}

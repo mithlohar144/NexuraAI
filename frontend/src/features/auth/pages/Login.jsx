@@ -27,8 +27,10 @@ const Login = () => {
 					navigate('/app')
 				}, 5000)
 			} else {
+				const rawMessage = result?.error || error || 'Login failed. Please check your credentials.'
+				const safeMessage = typeof rawMessage === 'string' ? rawMessage : 'Login failed. Please check your credentials.'
 				setToast({ 
-					message: result?.error || error || 'Login failed. Please check your credentials.', 
+					message: safeMessage, 
 					type: 'error' 
 				})
 			}
