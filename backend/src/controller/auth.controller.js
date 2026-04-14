@@ -33,7 +33,7 @@ export async function register(req, res, next) {
             <p>Hi ${username},</p>
             <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
             <p>Please verify your email address by clicking the link below:</p>
-            <a href="http://localhost:5000/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+            <a href="https://nexuraai.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
             <p>If you did not create an account, please ignore this email.</p>
             <p>Best regards,<br>The Perplexity Team</p>
         `
@@ -77,7 +77,7 @@ export async function verifyEmail(req, res) {
         const html = `
     h1>Your email has been verified!</h1>
     <p>Thank you for verifying your email address. You can now log in to your account and start using Perplexity.</p>
-    <a href="http://localhost:3000/login">Go to Login</a>
+    <a href="https://nexura-ai-sepia.vercel.app/login">Go to Login</a>
     
     `
         return res.send(html);
