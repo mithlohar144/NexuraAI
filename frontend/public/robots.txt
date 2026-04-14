@@ -1,0 +1,6 @@
+# robots.txt for perplexity frontend
+User-agent: *
+Allow: /
+
+# Replace with your production domain
+Sitemap: https://nexura-ai-sepia.vercel.app/sitemap.xml
